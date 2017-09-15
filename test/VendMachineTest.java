@@ -21,4 +21,12 @@ public class VendMachineTest {
         Coin quarter = new Coin(0.2, 0.955);
         assertEquals("$0.25", vendMachine.insertCoin(quarter));
     }
+
+    @Test
+    public void whenValidCoinIsInsertedItDisplaysCorrectCoinValue() {
+        Coin nickel = new Coin(0.176, 0.835);
+        Coin dime = new Coin(0.08, 0.705);
+        assertEquals("$0.05", vendMachine.insertCoin(nickel));
+        assertEquals("$0.10", vendMachine.insertCoin(dime));
+    }
 }
