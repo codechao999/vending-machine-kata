@@ -53,11 +53,13 @@ public class VendMachineTest {
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(quarter);
         assertEquals("THANK YOU", vendMachine.buyProduct());
+        assertEquals("INSERT COIN", vendMachine.checkDisplay());
     }
 
     @Test
     public void whenWeBuySomethingAndTheresNotEnoughMoneyItDisplaysThePrice() {
         vendMachine.insertCoin(quarter);
         assertEquals("PRICE: $1.00", vendMachine.buyProduct());
+        assertEquals("$0.25", vendMachine.checkDisplay());
     }
 }
