@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 
 public class User {
+
     ArrayList pocket;
-    private final Coin quarter = new Coin(0.2, 0.955);
-    private final Coin nickel = new Coin(0.176, 0.835);
-    private final Coin dime = new Coin(0.08, 0.705);
+
+    CoinIdentifier identifier = new USCoinIdentifier();
+
+
+
     public User(){
         pocket = new ArrayList();
     }
@@ -17,18 +20,18 @@ public class User {
         Integer dimeNum = 0, nickelNum = 0, quarterNum = 0, unusableNum = 0;
         for (Object o: pocket) {
             if (o instanceof Coin) {
-
                 Coin coin = (Coin) o;
+                String coinType = identifier.identifyCoin(coin);
                 double tolerance = 0.001;
-                if (((Math.abs(coin.diameter-nickel.diameter)<=tolerance)  && (Math.abs(coin.weight-nickel.weight)<=tolerance))) {
+                if (coinType == "nickel") {
                     nickelNum++;
                 }
 
-                else if (((Math.abs(coin.diameter-quarter.diameter)<=tolerance)  && (Math.abs(coin.weight-quarter.weight)<=tolerance))) {
+                else if (coinType == "quarter") {
                     quarterNum++;
                 }
 
-                else if (((Math.abs(coin.diameter-dime.diameter)<=tolerance)  && (Math.abs(coin.weight-dime.weight)<=tolerance))) {
+                else if (coinType == "dime") {
                     dimeNum++;
                 }
 
