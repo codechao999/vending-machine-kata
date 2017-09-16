@@ -46,4 +46,15 @@ public class VendMachine {
             }
         }
     }
+
+    public String buyProduct() {
+        if (moneyIn >= 1.00) {
+            moneyIn = 0.00;
+            return "THANK YOU";
+        }
+
+        else {
+            return null;
+        }
+    }
 }

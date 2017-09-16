@@ -45,4 +45,13 @@ public class VendMachineTest {
         vendMachine.insertCoin(dime);
         assertEquals("$0.60", vendMachine.insertCoin(quarter));
     }
+
+    @Test
+    public void whenWeBuySomethingAndTheresEnoughMoneyWeDispenseProduct() {
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        assertEquals("THANK YOU", vendMachine.buyProduct());
+    }
 }
