@@ -10,7 +10,13 @@ public class VendMachine {
     DecimalFormat df = new DecimalFormat("0.00");
 
     public String checkDisplay() {
-        return "INSERT COIN";
+        if (moneyIn == 0) {
+            return "INSERT COIN";
+        }
+
+        else {
+            return "$"+df.format(moneyIn);
+        }
     }
 
     public String insertCoin(Coin coin) {
