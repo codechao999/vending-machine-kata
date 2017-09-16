@@ -20,6 +20,7 @@ public class VendMachine {
     private final MenuItem returns = new MenuItem(0.00, "Coin Return");
     MenuItem[] menu = {cola, chips, candy, returns};
 
+    private Integer[] stock = {1, 1, 1, Integer.MAX_VALUE};
 
     public String checkDisplay() {
 
@@ -62,8 +63,13 @@ public class VendMachine {
     }
 
     public String buyProduct(Integer selection, User user) {
+        if (stock[selection] == 0) {
+            return "SOLD OUT";
+        }
+
         if (moneyIn == menu[selection].getPrice()) {
             moneyIn = 0.00;
+            stock[selection]--;
             return "THANK YOU";
         }
 
@@ -88,6 +94,7 @@ public class VendMachine {
             }
             user.pocket.addAll(coinReturn);
             moneyIn = 0.00;
+            stock[selection]--;
             return "THANK YOU";
         }
 

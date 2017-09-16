@@ -94,4 +94,17 @@ public class VendMachineTest {
         assertEquals("INSERT COIN", vendMachine.returnCoin(user));
         assertEquals("You have 1 nickel(s), 1 dime(s), 1 quarter(s), and 0 unusable coin(s).", user.checkMoney());
     }
+
+    @Test
+    public void whenWeSelectAnItemThatIsOutOfStockDisplaySaysSoldOutAndThenGoesBackToNormal() {
+        //we have to make sure we deplete the stock of product 2
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        vendMachine.buyProduct(1, user);
+        assertEquals("SOLD OUT", vendMachine.buyProduct(1, user));
+        assertEquals("INSERT COIN", vendMachine.checkDisplay());
+        vendMachine.insertCoin(quarter);
+        vendMachine.buyProduct(2, user);
+        assertEquals("$0.25", vendMachine.checkDisplay());
+    }
 }
