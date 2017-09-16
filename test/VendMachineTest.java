@@ -32,7 +32,6 @@ public class VendMachineTest {
     @Test
     public void whenValidCoinIsInsertedItDisplaysCorrectCoinValue() {
         assertEquals("$0.05", vendMachine.insertCoin(nickel));
-        assertEquals("$0.10", vendMachine.insertCoin(dime));
     }
 
     @Test
@@ -40,4 +39,10 @@ public class VendMachineTest {
         assertEquals("INSERT COIN", vendMachine.insertCoin(penny));
     }
 
+    @Test
+    public void whenWeInsertACoinAfterInsertingOtherCoinsItAddsAndDisplaysResult() {
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(dime);
+        assertEquals("$0.60", vendMachine.insertCoin(quarter));
+    }
 }
