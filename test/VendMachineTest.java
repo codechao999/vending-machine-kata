@@ -85,4 +85,13 @@ public class VendMachineTest {
         assertEquals("THANK YOU", vendMachine.buyProduct(2, user));
         assertEquals("You have 0 nickel(s), 1 dime(s), 0 quarter(s), and 0 unusable coin(s).", user.checkMoney());
     }
+
+    @Test
+    public void whenWeWantToPushTheReturnCoinButtonOurUnspentMoneyIsReturned() {
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(nickel);
+        vendMachine.insertCoin(dime);
+        assertEquals("INSERT COIN", vendMachine.returnCoin(user));
+        assertEquals("You have 1 nickel(s), 1 dime(s), 1 quarter(s), and 0 unusable coin(s).", user.checkMoney());
+    }
 }

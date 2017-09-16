@@ -17,7 +17,8 @@ public class VendMachine {
     private final MenuItem cola = new MenuItem(1.00, "Cola");
     private final MenuItem chips = new MenuItem(0.50, "Chips");
     private final MenuItem candy = new MenuItem(0.65, "Candy");
-    MenuItem[] menu = {cola, chips, candy};
+    private final MenuItem returns = new MenuItem(0.00, "Coin Return");
+    MenuItem[] menu = {cola, chips, candy, returns};
 
 
     public String checkDisplay() {
@@ -69,7 +70,7 @@ public class VendMachine {
         else if (moneyIn > menu[selection].getPrice()){
             moneyIn=moneyIn-menu[selection].getPrice();
             ArrayList coinReturn = new ArrayList();
-            while (moneyIn>0.00){
+            while (moneyIn>0.00 && moneyIn>=0.049){
                 while (moneyIn>=0.249){
                     coinReturn.add(new Coin(quarter));
                     moneyIn=moneyIn-0.25;
@@ -86,12 +87,17 @@ public class VendMachine {
                 }
             }
             user.pocket.addAll(coinReturn);
-
+            moneyIn = 0.00;
             return "THANK YOU";
         }
 
         else {
             return "PRICE: $"+df.format(menu[selection].getPrice());
         }
+    }
+
+    public String returnCoin(User user) {
+        buyProduct(3, user);
+        return "INSERT COIN";
     }
 }
