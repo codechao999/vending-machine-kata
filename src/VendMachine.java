@@ -18,8 +18,12 @@ public class VendMachine {
             return "$0.25";
         }
 
-        else {
+        else if (((Math.abs(coin.diameter-dime.diameter)<=tolerance)  && (Math.abs(coin.weight-dime.weight)<=tolerance))) {
             return "$0.10";
+        }
+
+        else {
+            return "INSERT COIN";
         }
     }
 }

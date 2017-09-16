@@ -29,4 +29,10 @@ public class VendMachineTest {
         assertEquals("$0.05", vendMachine.insertCoin(nickel));
         assertEquals("$0.10", vendMachine.insertCoin(dime));
     }
+
+    @Test
+    public void whenInvalidCoinIsInsertedItRejects() {
+        Coin penny = new Coin(0.088, 0.750);
+        assertEquals("INSERT COIN", vendMachine.insertCoin(penny));
+    }
 }
