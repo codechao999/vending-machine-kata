@@ -12,6 +12,7 @@ public class VendMachineTest {
 
     @Before
     public void setUp() {
+        User user = new User();
         vendMachine = new VendMachine();
         quarter = new Coin(0.2, 0.955);
         nickel = new Coin(0.176, 0.835);
@@ -52,14 +53,26 @@ public class VendMachineTest {
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(quarter);
-        assertEquals("THANK YOU", vendMachine.buyProduct());
+        assertEquals("THANK YOU", vendMachine.buyProduct(0));
         assertEquals("INSERT COIN", vendMachine.checkDisplay());
     }
 
     @Test
     public void whenWeBuySomethingAndTheresNotEnoughMoneyItDisplaysThePrice() {
         vendMachine.insertCoin(quarter);
-        assertEquals("PRICE: $1.00", vendMachine.buyProduct());
+        assertEquals("PRICE: $1.00", vendMachine.buyProduct(0));
         assertEquals("$0.25", vendMachine.checkDisplay());
+    }
+
+    @Test
+    public void whenWeBuySomethingWeCanBuyASpecificProduct() {
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        assertEquals("THANK YOU", vendMachine.buyProduct(1));
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(nickel);
+        vendMachine.insertCoin(dime);
+        assertEquals("THANK YOU", vendMachine.buyProduct(2));
     }
 }

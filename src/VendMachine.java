@@ -9,7 +9,16 @@ public class VendMachine {
     private double moneyIn = 0.00;
     DecimalFormat df = new DecimalFormat("0.00");
 
+
+
+    private final MenuItem cola = new MenuItem(1.00, "Cola");
+    private final MenuItem chips = new MenuItem(0.50, "Chips");
+    private final MenuItem candy = new MenuItem(0.65, "Candy");
+    MenuItem[] menu = {cola, chips, candy};
+
+
     public String checkDisplay() {
+
         if (moneyIn == 0) {
             return "INSERT COIN";
         }
@@ -47,14 +56,14 @@ public class VendMachine {
         }
     }
 
-    public String buyProduct() {
-        if (moneyIn >= 1.00) {
+    public String buyProduct(Integer selection) {
+        if (moneyIn >= menu[selection].getPrice()) {
             moneyIn = 0.00;
             return "THANK YOU";
         }
 
         else {
-            return "PRICE: $1.00";
+            return "PRICE: $"+df.format(menu[selection].getPrice());
         }
     }
 }
