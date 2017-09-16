@@ -54,7 +54,7 @@ public class VendMachine {
         }
 
         else {
-            return null;
+            return "PRICE: $1.00";
         }
     }
 }

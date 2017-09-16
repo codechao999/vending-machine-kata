@@ -54,4 +54,10 @@ public class VendMachineTest {
         vendMachine.insertCoin(quarter);
         assertEquals("THANK YOU", vendMachine.buyProduct());
     }
+
+    @Test
+    public void whenWeBuySomethingAndTheresNotEnoughMoneyItDisplaysThePrice() {
+        vendMachine.insertCoin(quarter);
+        assertEquals("PRICE: $1.00", vendMachine.buyProduct());
+    }
 }
