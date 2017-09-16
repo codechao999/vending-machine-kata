@@ -9,10 +9,11 @@ public class VendMachineTest {
     Coin nickel;
     Coin dime;
     Coin penny;
+    User user;
 
     @Before
     public void setUp() {
-        User user = new User();
+        user = new User();
         vendMachine = new VendMachine();
         quarter = new Coin(0.2, 0.955);
         nickel = new Coin(0.176, 0.835);
@@ -53,14 +54,14 @@ public class VendMachineTest {
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(quarter);
-        assertEquals("THANK YOU", vendMachine.buyProduct(0));
+        assertEquals("THANK YOU", vendMachine.buyProduct(0, user));
         assertEquals("INSERT COIN", vendMachine.checkDisplay());
     }
 
     @Test
     public void whenWeBuySomethingAndTheresNotEnoughMoneyItDisplaysThePrice() {
         vendMachine.insertCoin(quarter);
-        assertEquals("PRICE: $1.00", vendMachine.buyProduct(0));
+        assertEquals("PRICE: $1.00", vendMachine.buyProduct(0, user));
         assertEquals("$0.25", vendMachine.checkDisplay());
     }
 
@@ -68,11 +69,20 @@ public class VendMachineTest {
     public void whenWeBuySomethingWeCanBuyASpecificProduct() {
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(quarter);
-        assertEquals("THANK YOU", vendMachine.buyProduct(1));
+        assertEquals("THANK YOU", vendMachine.buyProduct(1, user));
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(quarter);
         vendMachine.insertCoin(nickel);
         vendMachine.insertCoin(dime);
-        assertEquals("THANK YOU", vendMachine.buyProduct(2));
+        assertEquals("THANK YOU", vendMachine.buyProduct(2, user));
+    }
+
+    @Test
+    public void whenWeBuySomethingAndWePutInMoreMoneyThanTheCostWeGetCorrectChangeBack(){
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        assertEquals("THANK YOU", vendMachine.buyProduct(2, user));
+        assertEquals("You have 0 nickel(s), 1 dime(s), 0 quarter(s), and 0 unusable coin(s).", user.checkMoney());
     }
 }

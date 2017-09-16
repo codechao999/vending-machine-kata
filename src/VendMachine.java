@@ -1,5 +1,6 @@
 import java.lang.Object.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class VendMachine {
 
@@ -56,9 +57,33 @@ public class VendMachine {
         }
     }
 
-    public String buyProduct(Integer selection) {
-        if (moneyIn >= menu[selection].getPrice()) {
+    public String buyProduct(Integer selection, User user) {
+        if (moneyIn == menu[selection].getPrice()) {
             moneyIn = 0.00;
+            return "THANK YOU";
+        }
+
+        else if (moneyIn > menu[selection].getPrice()){
+            moneyIn=moneyIn-menu[selection].getPrice();
+            ArrayList coinReturn = new ArrayList();
+            while (moneyIn>0.00){
+                while (moneyIn>=0.249){
+                    coinReturn.add(new Coin(quarter));
+                    moneyIn=moneyIn-0.25;
+                }
+
+                while (moneyIn>=0.099){
+                    coinReturn.add(new Coin(dime));
+                    moneyIn=moneyIn-0.10;
+                }
+
+                while (moneyIn>=0.049){
+                    coinReturn.add(new Coin(nickel));
+                    moneyIn=moneyIn-0.05;
+                }
+            }
+            user.pocket.addAll(coinReturn);
+
             return "THANK YOU";
         }
 

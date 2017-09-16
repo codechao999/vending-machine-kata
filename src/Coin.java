@@ -6,4 +6,9 @@ public class Coin {
         this.weight = weight;
         this.diameter = diameter;
     }
+
+    public Coin (Coin c) {
+        this.weight = c.weight;
+        this.diameter = c.diameter;
+    }
 }
