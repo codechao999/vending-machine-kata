@@ -1,19 +1,20 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class User {
 
-    ArrayList pocket;
+    ArrayList<Coin> pocket;
 
-    CoinIdentifier identifier = new USCoinIdentifier();
+    private CoinIdentifier identifier = new USCoinIdentifier();
 
 
 
     public User(){
-        pocket = new ArrayList();
+        pocket = new ArrayList<>();
     }
 
-    public User(ArrayList init){
-        pocket = new ArrayList(init);
+    public User(ArrayList<Coin> init){
+        pocket = new ArrayList<>(init);
     }
 
     public String checkMoney(){
@@ -23,15 +24,15 @@ public class User {
                 Coin coin = (Coin) o;
                 String coinType = identifier.identifyCoin(coin);
                 double tolerance = 0.001;
-                if (coinType == "nickel") {
+                if (Objects.equals(coinType, "nickel")) {
                     nickelNum++;
                 }
 
-                else if (coinType == "quarter") {
+                else if (Objects.equals(coinType, "quarter")) {
                     quarterNum++;
                 }
 
-                else if (coinType == "dime") {
+                else if (Objects.equals(coinType, "dime")) {
                     dimeNum++;
                 }
 

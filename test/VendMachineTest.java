@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 public class VendMachineTest {
 
-    VendMachine vendMachine;
-    Coin quarter;
-    Coin nickel;
-    Coin dime;
-    Coin penny;
-    User user;
+    private VendMachine vendMachine;
+    private Coin quarter;
+    private Coin nickel;
+    private Coin dime;
+    private Coin penny;
+    private User user;
 
     @Before
     public void setUp() {

@@ -1,6 +1,6 @@
-import java.lang.Object.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class VendMachine {
 
@@ -10,11 +10,11 @@ public class VendMachine {
 
     private double moneyIn = 0.00;
 
-    DecimalFormat df = new DecimalFormat("0.00");
+    private DecimalFormat df = new DecimalFormat("0.00");
 
-    CoinIdentifier identifier = new USCoinIdentifier();
+    private CoinIdentifier identifier = new USCoinIdentifier();
 
-    MenuItem[] menu;
+    private MenuItem[] menu;
 
     private Integer[] stock;
 
@@ -30,18 +30,8 @@ public class VendMachine {
         coinReturnIndex=stock.length-1;
     }
 
-    private boolean exactChangeOnly(){
-        if (changeStore[0] == 0){
-            return true;
-        }
-
-        else if (((changeStore[0] * 0.05) + (changeStore[1] *0.10)) < 0.20) {
-            return true;
-        }
-
-        else {
-            return false;
-        }
+    private boolean exactChangeOnly() {
+        return changeStore[0] == 0 || ((changeStore[0] * 0.05) + (changeStore[1] * 0.10)) < 0.20;
     }
 
     public String checkDisplay() {
@@ -63,32 +53,32 @@ public class VendMachine {
     public String insertCoin(Coin coin, User user) {
         double tolerance = 0.001;
         String coinType=identifier.identifyCoin(coin);
-        if (coinType == "nickel") {
+        if (Objects.equals(coinType, "nickel")) {
             moneyIn = moneyIn + 0.05;
             changeStore[0]++;
             return "$"+df.format(moneyIn);
-        }
+        } else {
+            if (Objects.equals(coinType, "quarter")) {
+                moneyIn = moneyIn + 0.25;
+                changeStore[2]++;
+                return "$"+df.format(moneyIn);
+            }
 
-        else if (coinType == "quarter") {
-            moneyIn = moneyIn + 0.25;
-            changeStore[2]++;
-            return "$"+df.format(moneyIn);
-        }
-
-        else if (coinType == "dime") {
-            moneyIn = moneyIn + 0.10;
-            changeStore[1]++;
-            return "$"+df.format(moneyIn);
-        }
-
-        else {
-            user.pocket.add(coin);
-            if (moneyIn == 0) {
-                return "INSERT COIN";
+            else if (Objects.equals(coinType, "dime")) {
+                moneyIn = moneyIn + 0.10;
+                changeStore[1]++;
+                return "$"+df.format(moneyIn);
             }
 
             else {
-                return "$"+df.format(moneyIn);
+                user.pocket.add(coin);
+                if (moneyIn == 0) {
+                    return "INSERT COIN";
+                }
+
+                else {
+                    return "$"+df.format(moneyIn);
+                }
             }
         }
     }
@@ -111,7 +101,7 @@ public class VendMachine {
 
         else if (moneyIn > menu[selection].getPrice()){
             moneyIn=moneyIn-menu[selection].getPrice();
-            ArrayList coinReturn = new ArrayList();
+            ArrayList<Coin> coinReturn = new ArrayList<>();
             while (moneyIn>0.00 && moneyIn>=0.049){
                 while (moneyIn>=0.249 && changeStore[2]>0){
                     coinReturn.add(new Coin(quarter));
