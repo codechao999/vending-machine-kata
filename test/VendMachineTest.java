@@ -28,69 +28,69 @@ public class VendMachineTest {
 
     @Test
     public void whenCoinIsInsertedItDisplaysTwentyFiveCents() {
-        assertEquals("$0.25", vendMachine.insertCoin(quarter));
+        assertEquals("$0.25", vendMachine.insertCoin(quarter, user));
     }
 
     @Test
     public void whenValidCoinIsInsertedItDisplaysCorrectCoinValue() {
-        assertEquals("$0.05", vendMachine.insertCoin(nickel));
+        assertEquals("$0.05", vendMachine.insertCoin(nickel, user));
     }
 
     @Test
     public void whenInvalidCoinIsInsertedItRejects() {
-        assertEquals("INSERT COIN", vendMachine.insertCoin(penny));
+        assertEquals("INSERT COIN", vendMachine.insertCoin(penny, user));
     }
 
     @Test
     public void whenWeInsertACoinAfterInsertingOtherCoinsItAddsAndDisplaysResult() {
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(dime);
-        assertEquals("$0.60", vendMachine.insertCoin(quarter));
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(dime, user);
+        assertEquals("$0.60", vendMachine.insertCoin(quarter, user));
     }
 
     @Test
     public void whenWeBuySomethingAndTheresEnoughMoneyWeDispenseProduct() {
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
         assertEquals("THANK YOU", vendMachine.buyProduct(0, user));
         assertEquals("INSERT COIN", vendMachine.checkDisplay());
     }
 
     @Test
     public void whenWeBuySomethingAndTheresNotEnoughMoneyItDisplaysThePrice() {
-        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter, user);
         assertEquals("PRICE: $1.00", vendMachine.buyProduct(0, user));
         assertEquals("$0.25", vendMachine.checkDisplay());
     }
 
     @Test
     public void whenWeBuySomethingWeCanBuyASpecificProduct() {
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
         assertEquals("THANK YOU", vendMachine.buyProduct(1, user));
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(nickel);
-        vendMachine.insertCoin(dime);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(nickel, user);
+        vendMachine.insertCoin(dime, user);
         assertEquals("THANK YOU", vendMachine.buyProduct(2, user));
     }
 
     @Test
     public void whenWeBuySomethingAndWePutInMoreMoneyThanTheCostWeGetCorrectChangeBack(){
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
         assertEquals("THANK YOU", vendMachine.buyProduct(2, user));
         assertEquals("You have 0 nickel(s), 1 dime(s), 0 quarter(s), and 0 unusable coin(s).", user.checkMoney());
     }
 
     @Test
     public void whenWeWantToPushTheReturnCoinButtonOurUnspentMoneyIsReturned() {
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(nickel);
-        vendMachine.insertCoin(dime);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(nickel, user);
+        vendMachine.insertCoin(dime, user);
         assertEquals("INSERT COIN", vendMachine.returnCoin(user));
         assertEquals("You have 1 nickel(s), 1 dime(s), 1 quarter(s), and 0 unusable coin(s).", user.checkMoney());
     }
@@ -98,27 +98,33 @@ public class VendMachineTest {
     @Test
     public void whenWeSelectAnItemThatIsOutOfStockDisplaySaysSoldOutAndThenGoesBackToNormal() {
         //we have to make sure we deplete the stock of product 2
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
         vendMachine.buyProduct(1, user);
         assertEquals("SOLD OUT", vendMachine.buyProduct(1, user));
         assertEquals("INSERT COIN", vendMachine.checkDisplay());
-        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter, user);
         vendMachine.buyProduct(2, user);
         assertEquals("$0.25", vendMachine.checkDisplay());
     }
 
     @Test
     public void whenTheMachineCantMakeChangeForAnyOfTheProductsItSellsItDisplaysExactChangeOnly() {
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(dime);
-        vendMachine.insertCoin(dime);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(dime, user);
+        vendMachine.insertCoin(dime, user);
         vendMachine.buyProduct(2, user);
         assertEquals("EXACT CHANGE ONLY", vendMachine.checkDisplay());
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
-        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
+        vendMachine.insertCoin(quarter, user);
         assertEquals("EXACT CHANGE ONLY", vendMachine.buyProduct(2, user));
+    }
+
+    @Test
+    public void whenWePutInAnInvalidCoinItIsReturnedToOurPocket(){
+        vendMachine.insertCoin(penny, user);
+        assertEquals("You have 0 nickel(s), 0 dime(s), 0 quarter(s), and 1 unusable coin(s).", user.checkMoney());
     }
 }

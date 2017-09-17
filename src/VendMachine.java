@@ -55,7 +55,7 @@ public class VendMachine {
         }
     }
 
-    public String insertCoin(Coin coin) {
+    public String insertCoin(Coin coin, User user) {
         double tolerance = 0.001;
         String coinType=identifier.identifyCoin(coin);
         if (coinType == "nickel") {
@@ -77,6 +77,7 @@ public class VendMachine {
         }
 
         else {
+            user.pocket.add(coin);
             if (moneyIn == 0) {
                 return "INSERT COIN";
             }
