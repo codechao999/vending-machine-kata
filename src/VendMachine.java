@@ -14,16 +14,21 @@ public class VendMachine {
 
     CoinIdentifier identifier = new USCoinIdentifier();
 
-    private final MenuItem cola = new MenuItem(1.00, "Cola");
-    private final MenuItem chips = new MenuItem(0.50, "Chips");
-    private final MenuItem candy = new MenuItem(0.65, "Candy");
-    private final MenuItem returns = new MenuItem(0.00, "Coin Return");
-    MenuItem[] menu = {cola, chips, candy, returns};
+    MenuItem[] menu;
 
-    private Integer[] stock = {1, 1, 3, Integer.MAX_VALUE};
+    private Integer[] stock;
+
+    private Integer coinReturnIndex;
 
     //This is in format lowest denomination accepted by the machine -> highest
-    private Integer[] changeStore = {1, 2, 0};
+    private Integer[] changeStore;
+
+    public VendMachine (Integer[] stock, MenuItem[] menu, Integer[] changeStore) {
+        this.stock=stock;
+        this.menu=menu;
+        this.changeStore=changeStore;
+        coinReturnIndex=stock.length-1;
+    }
 
     private boolean exactChangeOnly(){
         if (changeStore[0] == 0){
@@ -138,7 +143,7 @@ public class VendMachine {
     }
 
     public String returnCoin(User user) {
-        buyProduct(3, user);
+        buyProduct(coinReturnIndex, user);
         return "INSERT COIN";
     }
 }

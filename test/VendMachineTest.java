@@ -14,7 +14,9 @@ public class VendMachineTest {
     @Before
     public void setUp() {
         user = new User();
-        vendMachine = new VendMachine();
+
+        vendMachine = new VendMachine(new Integer[]{1, 1, 3, Integer.MAX_VALUE}, new MenuItem[]{new MenuItem(1.00, "Cola"), new MenuItem(0.50, "Chips"),
+                new MenuItem(0.65, "Candy"), new MenuItem(0.00, "Coin Return")}, new Integer[]{1, 2, 0});
         quarter = new Coin(0.2, 0.955);
         nickel = new Coin(0.176, 0.835);
         dime = new Coin(0.08, 0.705);
