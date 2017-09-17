@@ -107,4 +107,18 @@ public class VendMachineTest {
         vendMachine.buyProduct(2, user);
         assertEquals("$0.25", vendMachine.checkDisplay());
     }
+
+    @Test
+    public void whenTheMachineCantMakeChangeForAnyOfTheProductsItSellsItDisplaysExactChangeOnly() {
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(dime);
+        vendMachine.insertCoin(dime);
+        vendMachine.buyProduct(2, user);
+        assertEquals("EXACT CHANGE ONLY", vendMachine.checkDisplay());
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        vendMachine.insertCoin(quarter);
+        assertEquals("EXACT CHANGE ONLY", vendMachine.buyProduct(2, user));
+    }
 }

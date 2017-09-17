@@ -20,12 +20,34 @@ public class VendMachine {
     private final MenuItem returns = new MenuItem(0.00, "Coin Return");
     MenuItem[] menu = {cola, chips, candy, returns};
 
-    private Integer[] stock = {1, 1, 1, Integer.MAX_VALUE};
+    private Integer[] stock = {1, 1, 3, Integer.MAX_VALUE};
+
+    //This is in format lowest denomination accepted by the machine -> highest
+    private Integer[] changeStore = {1, 2, 0};
+
+    private boolean exactChangeOnly(){
+        if (changeStore[0] == 0){
+            return true;
+        }
+
+        else if (((changeStore[0] * 0.05) + (changeStore[1] *0.10)) < 0.20) {
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
 
     public String checkDisplay() {
-
-        if (moneyIn == 0) {
+        boolean ex = exactChangeOnly();
+        if (moneyIn == 0 && !(exactChangeOnly())) {
             return "INSERT COIN";
+        }
+
+        else if (moneyIn == 0 && (exactChangeOnly())){
+            System.out.println();
+            return "EXACT CHANGE ONLY";
         }
 
         else {
@@ -38,16 +60,19 @@ public class VendMachine {
         String coinType=identifier.identifyCoin(coin);
         if (coinType == "nickel") {
             moneyIn = moneyIn + 0.05;
+            changeStore[0]++;
             return "$"+df.format(moneyIn);
         }
 
         else if (coinType == "quarter") {
             moneyIn = moneyIn + 0.25;
+            changeStore[2]++;
             return "$"+df.format(moneyIn);
         }
 
         else if (coinType == "dime") {
             moneyIn = moneyIn + 0.10;
+            changeStore[1]++;
             return "$"+df.format(moneyIn);
         }
 
@@ -67,6 +92,11 @@ public class VendMachine {
             return "SOLD OUT";
         }
 
+        if ((moneyIn > menu[selection].getPrice()) && (exactChangeOnly())) {
+            Integer b = 1;
+            return "EXACT CHANGE ONLY";
+        }
+
         if (moneyIn == menu[selection].getPrice()) {
             moneyIn = 0.00;
             stock[selection]--;
@@ -77,19 +107,22 @@ public class VendMachine {
             moneyIn=moneyIn-menu[selection].getPrice();
             ArrayList coinReturn = new ArrayList();
             while (moneyIn>0.00 && moneyIn>=0.049){
-                while (moneyIn>=0.249){
+                while (moneyIn>=0.249 && changeStore[2]>0){
                     coinReturn.add(new Coin(quarter));
                     moneyIn=moneyIn-0.25;
+                    changeStore[2]--;
                 }
 
-                while (moneyIn>=0.099){
+                while (moneyIn>=0.099 && changeStore[1]>0){
                     coinReturn.add(new Coin(dime));
                     moneyIn=moneyIn-0.10;
+                    changeStore[1]--;
                 }
 
-                while (moneyIn>=0.049){
+                while (moneyIn>=0.049 && changeStore[0]>0){
                     coinReturn.add(new Coin(nickel));
                     moneyIn=moneyIn-0.05;
+                    changeStore[0]--;
                 }
             }
             user.pocket.addAll(coinReturn);
