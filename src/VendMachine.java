@@ -1,6 +1,5 @@
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public class VendMachine {
 
@@ -20,18 +19,36 @@ public class VendMachine {
 
     private Integer coinReturnIndex;
 
-    //This is in format lowest denomination accepted by the machine -> highest
-    private Integer[] changeStore;
+    private Queue<Coin> nickelStore;
+
+    private Queue<Coin> dimeStore;
+
+    private Queue<Coin> quarterStore;
+
+    //Stock is in format lowest denomination accepted by the machine -> highest
 
     public VendMachine (Integer[] stock, MenuItem[] menu, Integer[] changeStore) {
         this.stock=stock;
         this.menu=menu;
-        this.changeStore=changeStore;
         coinReturnIndex=stock.length-1;
+        nickelStore = new LinkedList<Coin>();
+        dimeStore = new LinkedList<Coin>();
+        quarterStore = new LinkedList<Coin>();
+        for (int i=0; i < changeStore[0]; i++) {
+            nickelStore.add(new Coin(nickel));
+        }
+
+        for (int i=0; i < changeStore[1]; i++) {
+            dimeStore.add(new Coin(dime));
+        }
+
+        for (int i=0; i < changeStore[2]; i++) {
+            quarterStore.add(new Coin(quarter));
+        }
     }
 
     private boolean exactChangeOnly() {
-        return changeStore[0] == 0 || ((changeStore[0] * 0.05) + (changeStore[1] * 0.10)) < 0.20;
+        return nickelStore.size() == 0 || ((nickelStore.size()) * 0.05 + (dimeStore.size() * 0.10)) < 0.20;
     }
 
     public String checkDisplay() {
@@ -51,34 +68,33 @@ public class VendMachine {
     }
 
     public String insertCoin(Coin coin, User user) {
-        double tolerance = 0.001;
         String coinType=identifier.identifyCoin(coin);
         if (Objects.equals(coinType, "nickel")) {
             moneyIn = moneyIn + 0.05;
-            changeStore[0]++;
+            nickelStore.add(coin);
             return "$"+df.format(moneyIn);
-        } else {
-            if (Objects.equals(coinType, "quarter")) {
-                moneyIn = moneyIn + 0.25;
-                changeStore[2]++;
-                return "$"+df.format(moneyIn);
-            }
+        }
 
-            else if (Objects.equals(coinType, "dime")) {
-                moneyIn = moneyIn + 0.10;
-                changeStore[1]++;
-                return "$"+df.format(moneyIn);
+        else if (Objects.equals(coinType, "dime")) {
+            moneyIn = moneyIn + 0.10;
+            dimeStore.add(coin);
+            return "$"+df.format(moneyIn);
+        }
+
+        else if (Objects.equals(coinType, "quarter")){
+            moneyIn = moneyIn + 0.25;
+            quarterStore.add(coin);
+            return "$" + df.format(moneyIn);
+        }
+
+        else {
+            user.giveCoin(coin);
+            if (moneyIn == 0) {
+                return "INSERT COIN";
             }
 
             else {
-                user.pocket.add(coin);
-                if (moneyIn == 0) {
-                    return "INSERT COIN";
-                }
-
-                else {
-                    return "$"+df.format(moneyIn);
-                }
+                return "$"+df.format(moneyIn);
             }
         }
     }
@@ -103,25 +119,22 @@ public class VendMachine {
             moneyIn=moneyIn-menu[selection].getPrice();
             ArrayList<Coin> coinReturn = new ArrayList<>();
             while (moneyIn>0.00 && moneyIn>=0.049){
-                while (moneyIn>=0.249 && changeStore[2]>0){
-                    coinReturn.add(new Coin(quarter));
+                while (moneyIn>=0.249 && quarterStore.size()>0){
+                    coinReturn.add(quarterStore.remove());
                     moneyIn=moneyIn-0.25;
-                    changeStore[2]--;
                 }
 
-                while (moneyIn>=0.099 && changeStore[1]>0){
-                    coinReturn.add(new Coin(dime));
+                while (moneyIn>=0.099 && dimeStore.size()>0){
+                    coinReturn.add(dimeStore.remove());
                     moneyIn=moneyIn-0.10;
-                    changeStore[1]--;
                 }
 
-                while (moneyIn>=0.049 && changeStore[0]>0){
-                    coinReturn.add(new Coin(nickel));
+                while (moneyIn>=0.049 && nickelStore.size()>0){
+                    coinReturn.add(nickelStore.remove());
                     moneyIn=moneyIn-0.05;
-                    changeStore[0]--;
                 }
             }
-            user.pocket.addAll(coinReturn);
+            user.giveCoin(coinReturn);
             moneyIn = 0.00;
             stock[selection]--;
             return "THANK YOU";
