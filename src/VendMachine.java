@@ -47,6 +47,10 @@ public class VendMachine {
         }
     }
 
+    public String getMenuItem(Integer selection) {
+        return menu[selection].getItem();
+    }
+
     private boolean exactChangeOnly() {
         return nickelStore.size() == 0 || ((nickelStore.size()) * 0.05 + (dimeStore.size() * 0.10)) < 0.20;
     }

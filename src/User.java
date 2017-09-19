@@ -73,4 +73,36 @@ public class User {
             }
         }
     }
+
+    public Integer getNumQuarters() {
+        return quarterPocket.size();
+    }
+
+    public Coin takeQuarter() {
+        return quarterPocket.poll();
+    }
+
+    public Integer getNumDimes() {
+        return dimePocket.size();
+    }
+
+    public Coin takeDime() {
+        return dimePocket.poll();
+    }
+
+    public Integer getNumNickels() {
+        return nickelPocket.size();
+    }
+
+    public Coin takeNickel() {
+        return nickelPocket.poll();
+    }
+
+    public Integer getNumOther() {
+        return otherCoinPocket.size();
+    }
+
+    public Coin takeOther() {
+        return otherCoinPocket.poll();
+    }
 }

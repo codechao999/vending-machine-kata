@@ -10,4 +10,8 @@ public class MenuItem {
     public double getPrice(){
         return price;
     }
+
+    public String getItem() {
+        return item;
+    }
 }
