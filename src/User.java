@@ -55,22 +55,7 @@ public class User {
 
     public void giveCoin(ArrayList<Coin> coins) {
         for (Coin o: coins) {
-            String coinType = identifier.identifyCoin(o);
-            if (Objects.equals(coinType, "nickel")) {
-                nickelPocket.add(o);
-            }
-
-            else if (Objects.equals(coinType, "quarter")) {
-                quarterPocket.add(o);
-            }
-
-            else if (Objects.equals(coinType, "dime")) {
-                dimePocket.add(o);
-            }
-
-            else {
-                otherCoinPocket.add(o);
-            }
+            giveCoin(o);
         }
     }
 

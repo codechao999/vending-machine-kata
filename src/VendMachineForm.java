@@ -62,10 +62,9 @@ public class VendMachineForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (currentUser.getNumQuarters() > 0) {
-                    vendMachine.insertCoin(currentUser.takeQuarter(), currentUser);
+                    textField2.setText(vendMachine.insertCoin(currentUser.takeQuarter(), currentUser));
                 }
                 textField1.setText(currentUser.checkMoney());
-                textField2.setText(vendMachine.checkDisplay());
             }
         });
         insertDimeButton.addActionListener(new ActionListener() {

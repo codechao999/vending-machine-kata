@@ -1,6 +1,6 @@
 public class MenuItem {
     private double price;
-    public String item;
+    private String item;
 
     public MenuItem(double price, String item){
         this.price = price;
