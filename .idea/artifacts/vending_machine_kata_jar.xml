@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="vending-machine-kata:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/vending_machine_kata_jar</output-path>
+    <root id="archive" name="vending-machine-kata.jar">
+      <element id="module-output" name="vending-machine-kata" />
+    </root>
+  </artifact>
+</component>

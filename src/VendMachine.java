@@ -25,7 +25,7 @@ public class VendMachine {
 
     private Queue<Coin> quarterStore;
 
-    //Stock is in format lowest denomination accepted by the machine -> highest
+    //changeStore is in format lowest denomination accepted by the machine -> highest
 
     public VendMachine (Integer[] stock, MenuItem[] menu, Integer[] changeStore) {
         this.stock=stock;
